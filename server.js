@@ -1,13 +1,15 @@
 const express = require('express');
-const path = require('path');
-const htmlData = require('../Develop/public/index.html');
 const PORT = process.env.PORT || 3001;
-
 const app = express();
 
 app.use(express.static('public'));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
+require('./routes/htmlRoutes')(app);
+require('./routes/apiRoutes')(app);
 
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);
