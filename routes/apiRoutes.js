@@ -1,25 +1,33 @@
-const fs = require('fs');
-const path = require('path');
+const notes = require('express').Router();
+const uuid = require('../helpers/uuid');
 
-module.exports = (app) => {
+// Helper functions for reading and writing to the JSON file
+const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
 
-app.get('/api/notes', (req, res) => {
-res.sendFile(path.join(__dirname, '../db/db.json'));
+// This API route is a GET Route for retrieving all the notes
+notes.get('/api/notes', (req, res) => {
+  console.info(`${req.method} request received for notes`);
+  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
-app.post('/api/notes', (req, res) => {
-    var db = fs.readFileSync('db/db.json');
-    db = JSON.parse(db);
-    res.json(db)
+// This API route is a POST Route for a new note
+notes.post('/api/notes', (req, res) => {
+  console.info(`${req.method} request received to add a note`);
 
-    var notes = {
-        title: req.body.title,
-        text: req.body.text,
+  const { title, text } = req.body;
+
+  if (req.body) {
+    const newNote = {
+      title,
+      text,
+      id: uuid(),
     };
 
-    db.push(notes);
-    fs.writeFileSync('db/db.json', JSON.stringify(db));
-    res.json(db);
-
+    readAndAppend(newNote, './db/db.json');
+    res.json(`Note added successfully 🚀`);
+  } else {
+    res.error('Error in adding note');
+  }
 });
-};
+
+module.exports = notes;
