@@ -22,8 +22,8 @@
 
 
  ## Screenshots
-
-
+![alt text](./public/assets/Screenshot%202024-02-08%20at%2010.52.31%20AM.png)
+![alt text](./public/assets/Screenshot%202024-02-08%20at%2010.52.50%20AM.png)
   ## Questions
  [Email me](mailto:efrenleal19@gmail.com)
 
